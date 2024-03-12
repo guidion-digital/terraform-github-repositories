@@ -77,11 +77,11 @@ EOF
     }), {})
     visibility         = optional(string, "private")
     protected_branches = optional(list(string), ["master", "main", "develop", "release", "dev", "prod"])
-    collaborators = map(object({
+    collaborators = optional(map(object({
       username                    = string,
       permission                  = optional(string, "pull")
       permission_diff_suppression = optional(bool, false)
-    }))
+    })), {})
     teams = optional(map(object({
       id         = number
       permission = optional(string, "push")
