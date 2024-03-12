@@ -26,6 +26,8 @@ resource "github_branch_protection" "this" {
 }
 
 resource "github_repository_tag_protection" "these" {
+  count = var.plan != "free" || var.visibility == "public" ? 1 : 0
+
   repository = var.repository
   pattern    = "releases/**"
 }

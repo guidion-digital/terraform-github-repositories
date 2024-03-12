@@ -64,8 +64,11 @@ module "branches" {
   depends_on = [module.environments]
   for_each   = github_repository.these
 
-  source       = "./modules/branches"
+  source = "./modules/branches"
+
   repository   = each.value.name
   branches     = lookup(var.repositories, each.value.name).protected_branches
   environments = lookup(var.repositories, each.value.name).environments
+  plan         = var.plan
+  visibility   = lookup(var.repositories, each.value.name).visibility
 }
