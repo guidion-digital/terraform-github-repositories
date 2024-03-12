@@ -34,6 +34,12 @@ Defines a repo in full. Map of the following object:
     visibility         = 'public' or 'private'
     protected_branches = List of branches that are to be protected with opinionated rules
 
+    collaborators = Map of {
+      username                    = Github username
+      permission                  = Permission to give username
+      permission_diff_suppression = Suppress plan diffs for triage and maintain
+    }
+
     teams = Map of {
       id         = Team ID
       permission = Corresponds to UI names in this order: 'pull', 'triage', 'push', 'maintain', 'admin'
@@ -71,6 +77,11 @@ EOF
     }), {})
     visibility         = optional(string, "private")
     protected_branches = optional(list(string), ["master", "main", "develop", "release", "dev", "prod"])
+    collaborators = map(object({
+      username                    = string,
+      permission                  = optional(string, "pull")
+      permission_diff_suppression = optional(bool, false)
+    }))
     teams = optional(map(object({
       id         = number
       permission = optional(string, "push")

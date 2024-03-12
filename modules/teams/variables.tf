@@ -11,3 +11,15 @@ variable "teams_info" {
     permission = optional(string, "push")
   }))
 }
+
+variable "collaborators" {
+  description = "For outside collaborators"
+
+  type = map(object({
+    username                    = string,
+    permission                  = optional(string, "pull")
+    permission_diff_suppression = optional(bool, false)
+  }))
+
+  default = {}
+}

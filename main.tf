@@ -46,8 +46,9 @@ module "teams" {
 
   source = "./modules/teams"
 
-  repository = each.value.name
-  teams_info = lookup(var.repositories, each.value.name).teams
+  repository    = each.value.name
+  teams_info    = lookup(var.repositories, each.value.name).teams
+  collaborators = lookup(var.repositories, each.value.name).collaborators
 }
 
 module "environments" {
