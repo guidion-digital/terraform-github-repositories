@@ -29,8 +29,9 @@ resource "github_repository_environment" "these" {
 }
 
 module "allowed_branches" {
-  source   = "./allowed_branches"
-  for_each = var.paid_features_available ? { for this_environment, these_values in var.environments : this_environment => these_values if try(these_values.allowed_branches, null) != null } : {}
+  depends_on = [github_repository_environment.these]
+  source     = "./allowed_branches"
+  for_each   = var.paid_features_available ? { for this_environment, these_values in var.environments : this_environment => these_values if try(these_values.allowed_branches, null) != null } : {}
 
   repository       = var.repository
   environment      = each.key
@@ -38,7 +39,8 @@ module "allowed_branches" {
 }
 
 module "secrets" {
-  for_each = var.environments
+  depends_on = [github_repository_environment.these]
+  for_each   = var.environments
 
   source = "./secrets"
 

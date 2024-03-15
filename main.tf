@@ -42,7 +42,8 @@ resource "github_repository" "these" {
 }
 
 module "teams" {
-  for_each = github_repository.these
+  depends_on = [github_repository.these]
+  for_each   = github_repository.these
 
   source = "./modules/teams"
 
@@ -52,7 +53,8 @@ module "teams" {
 }
 
 module "environments" {
-  for_each = github_repository.these
+  depends_on = [github_repository.these]
+  for_each   = github_repository.these
 
   source = "./modules/environments"
 
@@ -62,7 +64,7 @@ module "environments" {
 }
 
 module "branches" {
-  depends_on = [module.environments]
+  depends_on = [module.environments, github_repository.these]
   for_each   = github_repository.these
 
   source = "./modules/branches"
