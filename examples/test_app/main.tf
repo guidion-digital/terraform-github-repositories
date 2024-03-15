@@ -1,4 +1,5 @@
 # Variables go here:
+variable "plan" {}
 
 # Fixtures
 resource "github_team" "unicorns" {
@@ -11,6 +12,8 @@ resource "github_team" "unicorns" {
 # Test example
 module "unicorns_repos" {
   source = "../../"
+
+  plan = var.plan
 
   repositories = {
     "super-repo" = {

@@ -8,7 +8,7 @@ terraform {
 }
 
 resource "github_branch_protection" "this" {
-  for_each = toset(var.branches)
+  for_each = var.paid_features_available ? toset(var.protected_branches) : toset([])
 
   pattern                = each.key
   repository_id          = var.repository
@@ -26,10 +26,10 @@ resource "github_branch_protection" "this" {
 }
 
 resource "github_repository_tag_protection" "these" {
-  count = var.plan != "free" || var.visibility == "public" ? 1 : 0
+  for_each = var.paid_features_available ? toset(var.protected_tags) : toset([])
 
   repository = var.repository
-  pattern    = "releases/**"
+  pattern    = each.value
 }
 
 resource "github_repository_ruleset" "these" {

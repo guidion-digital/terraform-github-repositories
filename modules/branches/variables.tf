@@ -3,8 +3,13 @@ variable "repository" {
   type        = string
 }
 
-variable "branches" {
+variable "protected_branches" {
   description = "List of the protected branch names to configure"
+  type        = list(string)
+}
+
+variable "protected_tags" {
+  description = "List of the protected tags to configure"
   type        = list(string)
 }
 
@@ -16,18 +21,8 @@ variable "environments" {
   }))
 }
 
-variable "visibility" {
-  description = "Public or private?"
-  type        = string
-}
-
-variable "plan" {
-  description = "Not all features can be used on all plans"
-  type        = string
-  default     = "free"
-
-  validation {
-    condition     = contains(["free", "teams", "enterprise"], var.plan)
-    error_message = "Must be either 'free', 'teams', or 'enterprise'"
-  }
+variable "paid_features_available" {
+  description = "Not all features are available to private repos without paying"
+  type        = bool
+  default     = false
 }

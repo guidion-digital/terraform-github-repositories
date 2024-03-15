@@ -14,7 +14,7 @@ resource "github_repository_environment" "these" {
   repository  = var.repository
 
   dynamic "reviewers" {
-    for_each = var.plan == "teams" || var.plan == "enterprise" || var.visibility == "public" ? { "enabled" = true } : {}
+    for_each = var.paid_features_available ? { "enabled" = true } : {}
 
     content {
       teams = each.value.reviewers.teams
@@ -23,17 +23,18 @@ resource "github_repository_environment" "these" {
   }
 
   deployment_branch_policy {
-    protected_branches     = true
-    custom_branch_policies = var.visibility == "public" ? true : false
+    protected_branches     = var.paid_features_available ? false : true
+    custom_branch_policies = var.paid_features_available ? true : false
   }
 }
 
-resource "github_repository_deployment_branch_policy" "these" {
-  for_each = var.visibility == "public" ? github_repository_environment.these : {}
+module "allowed_branches" {
+  source   = "./allowed_branches"
+  for_each = var.paid_features_available ? { for this_environment, these_values in var.environments : this_environment => these_values if try(these_values.allowed_branches, null) != null } : {}
 
   repository       = var.repository
-  environment_name = each.key
-  name             = each.value.protected_pattern
+  environment      = each.key
+  allowed_branches = each.value.allowed_branches
 }
 
 module "secrets" {

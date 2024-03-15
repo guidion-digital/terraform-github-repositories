@@ -18,7 +18,7 @@ resource "github_repository" "these" {
   # If it's a private repository, and we're on an enterprise plan, we can explicitly
   # set 'advanced_security'
   dynamic "security_and_analysis" {
-    for_each = each.value.visibility == "private" && var.plan == "enterprise" ? { "enabled" = true } : {}
+    for_each = each.value.visibility != "private" && var.plan == "enterprise" ? { "enabled" = true } : {}
 
     content {
       advanced_security { status = each.value.security.advanced }
@@ -56,9 +56,9 @@ module "environments" {
 
   source = "./modules/environments"
 
-  repository   = each.value.name
-  environments = lookup(var.repositories, each.value.name).environments
-  visibility   = lookup(var.repositories, each.value.name).visibility
+  repository              = each.value.name
+  environments            = lookup(var.repositories, each.value.name).environments
+  paid_features_available = var.plan != "free" || lookup(var.repositories, each.value.name).visibility == "public" ? true : false
 }
 
 module "branches" {
@@ -67,9 +67,9 @@ module "branches" {
 
   source = "./modules/branches"
 
-  repository   = each.value.name
-  branches     = lookup(var.repositories, each.value.name).protected_branches
-  environments = lookup(var.repositories, each.value.name).environments
-  plan         = var.plan
-  visibility   = lookup(var.repositories, each.value.name).visibility
+  repository              = each.value.name
+  protected_branches      = lookup(var.repositories, each.value.name).protected_branches
+  protected_tags          = lookup(var.repositories, each.value.name).protected_tags
+  environments            = lookup(var.repositories, each.value.name).environments
+  paid_features_available = var.plan != "free" || lookup(var.repositories, each.value.name).visibility == "public" ? true : false
 }
