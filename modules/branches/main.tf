@@ -41,11 +41,11 @@ resource "github_repository_ruleset" "these" {
   enforcement = "disabled"
 
   dynamic "conditions" {
-    for_each = each.value.protects_branches != null ? each.value.protects_branches : []
+    for_each = each.value.protects_branches != null ? [each.value.protects_branches] : []
 
     content {
       ref_name {
-        include = ["refs/heads/${conditions.value}"]
+        include = [for this_condition in conditions.value : "refs/heads/${this_condition}"]
         exclude = []
       }
     }

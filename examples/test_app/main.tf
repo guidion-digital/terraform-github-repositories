@@ -23,7 +23,7 @@ module "unicorns_repos" {
 
       environments = {
         acc = {
-          protects_branches = ["master"]
+          protects_branches = ["master", "prod"]
           secrets           = ["npmrc"]
           variables = {
             "TFC_APPROVERS" = "afrazkhan"
