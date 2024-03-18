@@ -35,5 +35,5 @@ variable "default_branch" {
 }
 
 locals {
-  protected_branches = (contains(var.protected_branches, var.default_branch) == false ? concat(var.protected_branches, [var.default_branch]) : var.protected_branches)
+  protected_branches = var.default_branch != null ? (contains(var.protected_branches, var.default_branch) == false ? concat(var.protected_branches, [var.default_branch]) : var.protected_branches) : var.protected_branches
 }
