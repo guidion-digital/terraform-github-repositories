@@ -7,14 +7,9 @@ terraform {
   }
 }
 
-resource "github_branch" "default" {
-  count = var.create_default_branch ? 1 : 0
-
-  repository = var.repository
-  branch     = var.default_branch
-}
-
 resource "github_branch_default" "default" {
+  count = var.default_branch != null ? 1 : 0
+
   repository = var.repository
   branch     = var.default_branch
 }

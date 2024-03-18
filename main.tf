@@ -71,7 +71,6 @@ module "branches" {
 
   repository              = each.value.name
   default_branch          = lookup(var.repositories, each.value.name).default_branch
-  create_default_branch   = lookup(var.repositories, each.value.name).create_default_branch
   protected_branches      = lookup(var.repositories, each.value.name).protected_branches
   protected_tags          = lookup(var.repositories, each.value.name).protected_tags
   environments            = lookup(var.repositories, each.value.name).environments

@@ -30,13 +30,8 @@ variable "paid_features_available" {
 variable "default_branch" {
   description = "Branch to make PRs against by default"
   type        = string
-  default     = "acc"
-}
 
-variable "create_default_branch" {
-  description = "Whether to create var.default_branch"
-  type        = bool
-  default     = false
+  default = null
 }
 
 locals {
