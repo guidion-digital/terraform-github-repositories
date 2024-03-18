@@ -26,3 +26,19 @@ variable "paid_features_available" {
   type        = bool
   default     = false
 }
+
+variable "default_branch" {
+  description = "Branch to make PRs against by default"
+  type        = string
+  default     = "acc"
+}
+
+variable "create_default_branch" {
+  description = "Whether to create var.default_branch"
+  type        = bool
+  default     = false
+}
+
+locals {
+  protected_branches = (contains(var.protected_branches, var.default_branch) == false ? concat(var.protected_branches, [var.default_branch]) : var.protected_branches)
+}

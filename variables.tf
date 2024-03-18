@@ -24,6 +24,8 @@ Defines a repo in full. Map of the following object:
     has_wiki               = Set to true to enable the GitHub Wiki features on the repository
     is_template            = Set to true to tell GitHub that this is a template repository
     vulnerability_alerts   = Set to true to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level
+    default_branch         = Branch to make PRs against by default
+    create_default_branch  = Whether to create the default branch
 
     security = {
       advanced                        = Whether advanced security is enabled. Has no effect on public repositories, or private repositories with an enterprise plan
@@ -71,6 +73,8 @@ EOF
     has_wiki               = optional(bool, false)
     is_template            = optional(bool, false)
     vulnerability_alerts   = optional(bool, false)
+    default_branch         = optional(string, "acc")
+    create_default_branch  = optional(bool, false)
     security = optional(object({
       advanced                        = optional(string, "enabled")
       secret_scanning                 = optional(string, "enabled")

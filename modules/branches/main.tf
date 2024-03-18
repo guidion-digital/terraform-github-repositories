@@ -7,8 +7,20 @@ terraform {
   }
 }
 
+resource "github_branch" "default" {
+  count = var.create_default_branch ? 1 : 0
+
+  repository = var.repository
+  branch     = var.default_branch
+}
+
+resource "github_branch_default" "default" {
+  repository = var.repository
+  branch     = var.default_branch
+}
+
 resource "github_branch_protection" "this" {
-  for_each = var.paid_features_available ? toset(var.protected_branches) : toset([])
+  for_each = var.paid_features_available ? toset(local.protected_branches) : toset([])
 
   pattern                = each.key
   repository_id          = var.repository
