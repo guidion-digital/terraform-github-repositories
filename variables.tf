@@ -19,7 +19,7 @@ Defines a repo in full. Map of the following object:
     allow_update_branch    = Set to true to always suggest updating pull request branches
     has_discussions        = Set to true to enable GitHub Discussions on the repository. Defaults to false
     has_downloads          = Set to true to enable the (deprecated) downloads features on the repository
-    has_issues             = Set to true to enable the GitHub Issues features on the repository
+    has_issues             = Set to false to disable the GitHub Issues features on the repository
     has_projects           = Set to true to enable the GitHub Projects features on the repository. Per the GitHub documentation when in an organization that has disabled repository projects it will default to false and will otherwise default to true. If you specify true when it has been disabled it will return an error
     has_wiki               = Set to true to enable the GitHub Wiki features on the repository
     is_template            = Set to true to tell GitHub that this is a template repository
@@ -67,7 +67,7 @@ EOF
     allow_update_branch    = optional(bool, false)
     has_discussions        = optional(bool, false)
     has_downloads          = optional(bool, false)
-    has_issues             = optional(bool, false)
+    has_issues             = optional(bool, true)
     has_projects           = optional(bool, false)
     has_wiki               = optional(bool, false)
     is_template            = optional(bool, false)
