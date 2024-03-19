@@ -61,6 +61,7 @@ module "environments" {
   repository              = each.value.name
   environments            = lookup(var.repositories, each.value.name).environments
   paid_features_available = var.plan != "free" || lookup(var.repositories, each.value.name).visibility == "public" ? true : false
+  plan                    = var.plan
 }
 
 module "branches" {

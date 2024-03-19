@@ -24,3 +24,14 @@ variable "paid_features_available" {
   type        = bool
   default     = false
 }
+
+variable "plan" {
+  description = "Not all features can be used on all plans"
+  type        = string
+  default     = "free"
+
+  validation {
+    condition     = contains(["free", "teams", "enterprise"], var.plan)
+    error_message = "Must be either 'free', 'teams', or 'enterprise'"
+  }
+}

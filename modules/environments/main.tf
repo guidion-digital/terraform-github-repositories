@@ -14,7 +14,7 @@ resource "github_repository_environment" "these" {
   repository  = var.repository
 
   dynamic "reviewers" {
-    for_each = var.paid_features_available ? { "enabled" = true } : {}
+    for_each = var.plan == "enterprise" ? { "enabled" = true } : {}
 
     content {
       teams = each.value.reviewers.teams
