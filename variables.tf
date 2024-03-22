@@ -9,6 +9,12 @@ variable "plan" {
   }
 }
 
+variable "advanced_security" {
+  description = "Whether advanced security has been purchased"
+  type        = bool
+  default     = false
+}
+
 variable "repositories" {
   description = <<EOF
 Defines a repo in full. Map of the following object:
@@ -27,7 +33,7 @@ Defines a repo in full. Map of the following object:
     default_branch         = Branch to make PRs against by default (must exist if set)
 
     security = {
-      advanced                        = Whether advanced security is enabled. Has no effect on public repositories, or private repositories with an enterprise plan
+      advanced                        = Whether advanced security is enabled. Has no effect on public repositories, or private repositories without an advanced security purchase
       secret_scanning                 = Whether to scan secrets
       secret_scanning_push_protection = Whether to prevent secrets from being pushed
     }

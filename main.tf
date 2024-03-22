@@ -18,7 +18,7 @@ resource "github_repository" "these" {
   # If it's a private repository, and we're on an enterprise plan, we can explicitly
   # set 'advanced_security'
   dynamic "security_and_analysis" {
-    for_each = each.value.visibility == "private" && var.plan == "enterprise" ? { "enabled" = true } : {}
+    for_each = each.value.visibility == "private" && var.advanced_security ? { "enabled" = true } : {}
 
     content {
       advanced_security { status = each.value.security.advanced }
