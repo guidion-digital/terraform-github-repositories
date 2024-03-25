@@ -46,10 +46,11 @@ resource "github_repository_ruleset" "these" {
   name        = each.key
   repository  = var.repository
   target      = "branch"
-  enforcement = "disabled"
+  enforcement = "disabled" # TODO: This is a work in progress
 
   dynamic "conditions" {
-    for_each = each.value.protects_branches != null ? [each.value.protects_branches] : []
+    # Needs to have a value due to a bug in the Github provider
+    for_each = each.value.protects_branches != null ? [each.value.protects_branches] : [["github-provider-workaround"]]
 
     content {
       ref_name {
