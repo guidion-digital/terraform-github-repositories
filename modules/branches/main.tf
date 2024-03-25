@@ -42,7 +42,7 @@ resource "github_repository_tag_protection" "these" {
 resource "github_repository_ruleset" "these" {
   for_each = var.environments
 
-  name        = "prod"
+  name        = each.key
   repository  = var.repository
   target      = "branch"
   enforcement = "disabled"
