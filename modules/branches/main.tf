@@ -32,13 +32,12 @@ resource "github_branch_protection" "this" {
   }
 }
 
-# FIXME: Sometimes results in 400 due to a bug in the Github provider
-# resource "github_repository_tag_protection" "these" {
-#   for_each = var.paid_features_available ? toset(var.protected_tags) : toset([])
-#
-#   repository = var.repository
-#   pattern    = each.value
-# }
+resource "github_repository_tag_protection" "these" {
+  for_each = var.paid_features_available ? toset(var.protected_tags) : toset([])
+
+  repository = var.repository
+  pattern    = each.value
+}
 
 resource "github_repository_ruleset" "these" {
   for_each = var.environments
