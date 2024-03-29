@@ -66,7 +66,7 @@ resource "github_repository_ruleset" "these" {
     required_signatures = true
 
     required_deployments {
-      required_deployment_environments = [each.key]
+      required_deployment_environments = each.value.needs_environments
     }
   }
 }

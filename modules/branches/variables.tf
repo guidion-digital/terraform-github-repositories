@@ -14,10 +14,11 @@ variable "protected_tags" {
 }
 
 variable "environments" {
-  description = "Only needs protects_branches list from parent"
+  description = "Only these two keys from parent"
 
   type = map(object({
-    protects_branches = list(string)
+    protects_branches  = list(string)
+    needs_environments = list(string)
   }))
 }
 

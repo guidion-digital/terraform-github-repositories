@@ -54,10 +54,11 @@ Defines a repo in full. Map of the following object:
     }
 
     environments = Map of {
-      secrets           = List of names of secrets to create. Does not handle value population
-      variables         = Map of variable name to values
-      protects_branches = List of branches protected by this environment (deployment needs to pass)
-      allowed_branches = List of branches allowed access to this environment
+      secrets            = List of names of secrets to create. Does not handle value population
+      variables          = Map of variable name to values
+      protects_branches  = List of branches protected by this environment (deployment needs to pass)
+      allowed_branches   = List of branches allowed access to this environment
+      needs_environments = (WIP) List of environments that need to have been deployed before this one can be
       reviewers = {
         teams = List of team reviewers
         users = List of individual user reviewers
@@ -97,10 +98,11 @@ EOF
       permission = optional(string, "push")
     })), {})
     environments = optional(map(object({
-      secrets           = optional(list(string), [])
-      variables         = optional(map(string), {})
-      protects_branches = optional(list(string), []),
-      allowed_branches  = optional(list(string), []),
+      secrets            = optional(list(string), [])
+      variables          = optional(map(string), {})
+      protects_branches  = optional(list(string)),
+      allowed_branches   = optional(list(string), []),
+      needs_environments = optional(list(string), []),
       reviewers = optional(object({
         teams = optional(list(number), [])
         users = optional(list(number), [])
