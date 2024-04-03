@@ -72,7 +72,7 @@ module "branches" {
 
   repository              = each.value.name
   default_branch          = lookup(var.repositories, each.value.name).default_branch
-  protected_branches      = lookup(var.repositories, each.value.name).protected_branches
+  branch_protections      = lookup(var.repositories, each.value.name).branch_protections
   protected_tags          = lookup(var.repositories, each.value.name).protected_tags
   paid_features_available = var.plan != "free" || lookup(var.repositories, each.value.name).visibility == "public" ? true : false
 }

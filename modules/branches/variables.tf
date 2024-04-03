@@ -3,13 +3,35 @@ variable "repository" {
   type        = string
 }
 
-variable "protected_branches" {
-  description = "List of the protected branch names to configure"
-  type        = list(string)
+variable "branch_protections" {
+  description = "Various options on branch protections. Key is used as the branch name"
+
+  type = map(object({
+    enforce_admins                  = optional(bool, false)
+    require_signed_commits          = optional(bool, false)
+    required_linear_history         = optional(bool, false)
+    require_conversation_resolution = optional(bool, false)
+    required_status_checks = optional(object({
+      strict   = optional(bool, false)
+      contexts = optional(list(string))
+    }))
+    required_pull_request_reviews = optional(object({
+      required_approving_review_count = optional(number, 1)
+      dismiss_stale_reviews           = optional(bool, true)
+    }))
+    restrict_pushes = optional(object({
+      blocks_creations = optional(bool, true)
+      push_allowances  = optional(list(string))
+    }))
+    force_push_bypassers = optional(list(string), [])
+    allows_deletions     = optional(bool, false)
+    allows_force_pushes  = optional(bool, false)
+    lock_branch          = optional(bool, false)
+  }))
 }
 
 variable "protected_tags" {
-  description = "List of the protected tags to configure"
+  description = "WIP: List of the protected tags to configure"
   type        = list(string)
 }
 
@@ -24,8 +46,4 @@ variable "default_branch" {
   type        = string
 
   default = null
-}
-
-locals {
-  protected_branches = var.default_branch != null && length(var.protected_branches) != 0 ? (contains(var.protected_branches, var.default_branch) == false ? concat(var.protected_branches, [var.default_branch]) : var.protected_branches) : var.protected_branches
 }

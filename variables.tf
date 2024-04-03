@@ -30,7 +30,7 @@ Defines a repo in full. Map of the following object:
     has_wiki               = Set to true to enable the GitHub Wiki features on the repository
     is_template            = Set to true to tell GitHub that this is a template repository
     vulnerability_alerts   = Set to true to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level
-    default_branch         = Branch to make PRs against by default (must exist if set)
+    default_branch         = Branch to make PRs against by default (must already exist if set, so can not be used when creating repository)
 
     security = {
       advanced                        = Whether advanced security is enabled. Has no effect on public repositories, or private repositories without an advanced security purchase
@@ -39,8 +39,31 @@ Defines a repo in full. Map of the following object:
     }
 
     visibility         = 'public' or 'private'
-    protected_branches = List of branches that are to be protected with opinionated rules
     protected_tags     = List of tags that are to be protected with opinionated rules
+
+    branch_protections = Map of objects with of {
+      enforce_admins                  = Setting this to true enforces status checks for repository administrators
+      require_signed_commits          = Setting this to true requires all commits to be signed with GPG
+      required_linear_history         = Setting this to true enforces a linear commit Git history, which prevents anyone from pushing merge commits to a branch
+      require_conversation_resolution = Setting this to true requires all conversations on code must be resolved before a pull request can be merged.
+      required_status_checks = Object of {
+        strict   = Require branches to be up to date before merging
+        contexts = The list of status checks to require in order to merge into this branch
+        }
+      })
+      required_pull_request_reviews = Object of {
+        required_approving_review_count = TODO: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection
+        dismiss_stale_reviews           = TODO: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection
+      }
+      restrict_pushes = Object of {
+        blocks_creations = TODO: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection
+        push_allowances  = TODO: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection
+      }
+      force_push_bypassers = TODO: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection
+      allows_deletions     = TODO: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection
+      allows_force_pushes  = TODO: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection
+      lock_branch          = TODO: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection
+    }
 
     collaborators = Map of {
       username                    = Github username
@@ -90,9 +113,42 @@ EOF
       secret_scanning                 = optional(string, "enabled")
       secret_scanning_push_protection = optional(string, "enabled")
     }), {})
-    visibility         = optional(string, "private")
-    protected_branches = optional(list(string), ["master", "main", "acc", "develop", "release", "dev", "prod"])
-    protected_tags     = optional(list(string), ["releases/**"])
+    visibility = optional(string, "private")
+
+    branch_protections = optional(map(object({
+      enforce_admins                  = optional(bool, false)
+      require_signed_commits          = optional(bool, false)
+      required_linear_history         = optional(bool, false)
+      require_conversation_resolution = optional(bool, false)
+      required_status_checks = optional(object({
+        strict   = optional(bool, false)
+        contexts = optional(list(string), [])
+        }), {
+        strict   = false
+        contexts = []
+      })
+      required_pull_request_reviews = optional(object({
+        required_approving_review_count = optional(number, 1)
+        dismiss_stale_reviews           = optional(bool, true)
+        }), {
+        required_approving_review_count = 1
+        dismiss_stale_reviews           = true
+      })
+      restrict_pushes = optional(object({
+        blocks_creations = optional(bool, true)
+        push_allowances  = optional(list(string), [])
+        }), {
+        blocks_creations = true
+        push_allowances  = []
+      })
+      force_push_bypassers = optional(list(string), [])
+      allows_deletions     = optional(bool, false)
+      allows_force_pushes  = optional(bool, false)
+      lock_branch          = optional(bool, false)
+    })), {})
+
+
+    protected_tags = optional(list(string), ["releases/**"])
     collaborators = optional(map(object({
       username                    = string,
       permission                  = optional(string, "pull")

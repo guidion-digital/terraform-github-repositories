@@ -21,6 +21,27 @@ module "unicorns_repos" {
       homepage_url = "https://example.com"
       visibility   = "private"
 
+      enforce_admins                  = true
+      require_signed_commits          = true
+      required_linear_history         = false
+      require_conversation_resolution = true
+      required_status_checks = {
+        strict   = true
+        contexts = []
+      }
+      required_pull_request_reviews = {
+        required_approving_review_count = 2
+        dismiss_stale_reviews           = false
+      }
+      restrict_pushes = {
+        blocks_creations = false
+        push_allowances  = []
+      }
+      force_push_bypassers = []
+      allows_deletions     = true
+      allows_force_pushes  = false
+      lock_branch          = true
+
       environments = {
         acc = {
           secrets = ["npmrc"]
