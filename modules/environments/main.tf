@@ -50,6 +50,12 @@ module "secrets" {
   variables   = each.value.variables
 }
 
-output "secrets" {
-  value = module.secrets
+module "environment_rulesets" {
+  source = "./environment_rulesets"
+
+  for_each = var.environments
+
+  repository  = var.repository
+  environment = each.key
+  protections = each.value.protections
 }

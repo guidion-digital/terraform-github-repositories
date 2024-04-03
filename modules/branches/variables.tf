@@ -13,15 +13,6 @@ variable "protected_tags" {
   type        = list(string)
 }
 
-variable "environments" {
-  description = "Only these two keys from parent"
-
-  type = map(object({
-    protects_branches  = list(string)
-    needs_environments = list(string)
-  }))
-}
-
 variable "paid_features_available" {
   description = "Not all features are available to private repos without paying"
   type        = bool

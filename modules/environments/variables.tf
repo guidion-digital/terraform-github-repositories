@@ -9,6 +9,10 @@ variable "environments" {
     secrets          = optional(list(string), [])
     variables        = optional(map(string), {})
     allowed_branches = optional(list(string), [])
+    protections = optional(object({
+      protected_branches = list(string)
+      needs_environments = list(string)
+    }))
     reviewers = optional(object({
       teams = optional(list(number), [])
       users = optional(list(number), [])

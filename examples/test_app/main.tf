@@ -23,11 +23,16 @@ module "unicorns_repos" {
 
       environments = {
         acc = {
-          protects_branches = ["master", "prod"]
-          secrets           = ["npmrc"]
+          secrets = ["npmrc"]
           variables = {
             "TFC_APPROVERS" = "afrazkhan"
           }
+
+          protections = {
+            protected_branches = ["acc"]
+            needs_environments = ["dev"]
+          }
+
           reviewers = {
             teams = [github_team.unicorns.id]
           }

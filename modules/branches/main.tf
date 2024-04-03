@@ -38,35 +38,3 @@ resource "github_repository_tag_protection" "these" {
   repository = var.repository
   pattern    = each.value
 }
-
-resource "github_repository_ruleset" "these" {
-  for_each = var.environments
-
-  name        = each.key
-  repository  = var.repository
-  target      = "branch"
-  enforcement = "disabled" # TODO: This is a work in progress
-
-  dynamic "conditions" {
-    # Needs to have a value due to a bug in the Github provider
-    for_each = each.value.protects_branches != null ? [each.value.protects_branches] : [["github-provider-workaround"]]
-
-    content {
-      ref_name {
-        include = [for this_condition in conditions.value : "refs/heads/${this_condition}"]
-        exclude = []
-      }
-    }
-  }
-
-  rules {
-    creation            = true
-    update              = true
-    deletion            = true
-    required_signatures = true
-
-    required_deployments {
-      required_deployment_environments = each.value.needs_environments
-    }
-  }
-}
