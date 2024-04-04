@@ -16,8 +16,13 @@ variable "branch_protections" {
       contexts = optional(list(string))
     }))
     required_pull_request_reviews = optional(object({
-      required_approving_review_count = optional(number, 1)
       dismiss_stale_reviews           = optional(bool, true)
+      restrict_dismissals             = optional(bool, false)
+      dismissal_restrictions          = optional(list(string), [])
+      pull_request_bypassers          = optional(list(string), [])
+      require_code_owner_reviews      = optional(bool, false)
+      required_approving_review_count = optional(number, 1)
+      require_last_push_approval      = optional(bool, false)
     }))
     restrict_pushes = optional(object({
       blocks_creations = optional(bool, true)

@@ -41,29 +41,7 @@ Defines a repo in full. Map of the following object:
     visibility         = 'public' or 'private'
     protected_tags     = List of tags that are to be protected with opinionated rules
 
-    branch_protections = Map of objects with of {
-      enforce_admins                  = Setting this to true enforces status checks for repository administrators
-      require_signed_commits          = Setting this to true requires all commits to be signed with GPG
-      required_linear_history         = Setting this to true enforces a linear commit Git history, which prevents anyone from pushing merge commits to a branch
-      require_conversation_resolution = Setting this to true requires all conversations on code must be resolved before a pull request can be merged.
-      required_status_checks = Object of {
-        strict   = Require branches to be up to date before merging
-        contexts = The list of status checks to require in order to merge into this branch
-        }
-      })
-      required_pull_request_reviews = Object of {
-        required_approving_review_count = TODO: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection
-        dismiss_stale_reviews           = TODO: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection
-      }
-      restrict_pushes = Object of {
-        blocks_creations = TODO: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection
-        push_allowances  = TODO: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection
-      }
-      force_push_bypassers = TODO: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection
-      allows_deletions     = TODO: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection
-      allows_force_pushes  = TODO: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection
-      lock_branch          = TODO: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection
-    }
+    branch_protections = Map of branch protections and their settings. See here for specification: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection#argument-reference
 
     collaborators = Map of {
       username                    = Github username
@@ -128,11 +106,22 @@ EOF
         contexts = []
       })
       required_pull_request_reviews = optional(object({
-        required_approving_review_count = optional(number, 1)
         dismiss_stale_reviews           = optional(bool, true)
+        restrict_dismissals             = optional(bool, false)
+        dismissal_restrictions          = optional(list(string), [])
+        pull_request_bypassers          = optional(list(string), [])
+        require_code_owner_reviews      = optional(bool, false)
+        required_approving_review_count = optional(number, 1)
+        require_last_push_approval      = optional(bool, false)
         }), {
-        required_approving_review_count = 1
         dismiss_stale_reviews           = true
+        restrict_dismissals             = false
+        dismissal_restrictions          = []
+        pull_request_bypassers          = []
+        require_code_owner_reviews      = false
+        required_approving_review_count = 1
+        require_last_push_approval      = false
+
       })
       restrict_pushes = optional(object({
         blocks_creations = optional(bool, true)
