@@ -32,6 +32,7 @@ module "unicorns_repos" {
       required_pull_request_reviews = {
         required_approving_review_count = 2
         dismiss_stale_reviews           = false
+        pull_request_bypassers          = ["mitnik"]
       }
       restrict_pushes = {
         blocks_creations = false

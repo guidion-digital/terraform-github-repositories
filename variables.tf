@@ -57,7 +57,6 @@ Defines a repo in full. Map of the following object:
     environments = Map of {
       secrets            = List of names of secrets to create. Does not handle value population
       variables          = Map of variable name to values
-      protects_branches  = List of branches protected by this environment (deployment needs to pass)
       allowed_branches   = List of branches allowed access to this environment
       needs_environments = (WIP) List of environments that need to have been deployed before this one can be
       protections = Creates a ruleset if provided:
