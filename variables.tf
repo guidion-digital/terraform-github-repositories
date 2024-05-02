@@ -112,16 +112,7 @@ EOF
         require_code_owner_reviews      = optional(bool, false)
         required_approving_review_count = optional(number, 1)
         require_last_push_approval      = optional(bool, false)
-        }), {
-        dismiss_stale_reviews           = true
-        restrict_dismissals             = false
-        dismissal_restrictions          = []
-        pull_request_bypassers          = []
-        require_code_owner_reviews      = false
-        required_approving_review_count = 1
-        require_last_push_approval      = false
-
-      })
+      }), {})
       restrict_pushes = optional(object({
         blocks_creations = optional(bool, true)
         push_allowances  = optional(list(string), [])
