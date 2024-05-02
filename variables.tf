@@ -41,7 +41,12 @@ Defines a repo in full. Map of the following object:
     visibility         = 'public' or 'private'
     protected_tags     = List of tags that are to be protected with opinionated rules
 
-    branch_protections = Map of branch protections and their settings. See here for specification: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection#argument-reference
+    branch_protections = Map of branch protections and their settings.
+                         See here for specification: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection#argument-reference
+                         N.B. Block and all attributes are optional, but if any
+                         value is given, then the other attributes are filled
+                         in by their defaults, which you can find in the variable
+                         definition
 
     collaborators = Map of {
       username                    = Github username
@@ -112,7 +117,7 @@ EOF
         require_code_owner_reviews      = optional(bool, false)
         required_approving_review_count = optional(number, 1)
         require_last_push_approval      = optional(bool, false)
-      }), {})
+      }), null)
       restrict_pushes = optional(object({
         blocks_creations = optional(bool, true)
         push_allowances  = optional(list(string), [])

@@ -23,7 +23,7 @@ variable "branch_protections" {
       require_code_owner_reviews      = optional(bool, false)
       required_approving_review_count = optional(number, 1)
       require_last_push_approval      = optional(bool, false)
-    }), {})
+    }), null)
     restrict_pushes = optional(object({
       blocks_creations = optional(bool, true)
       push_allowances  = optional(list(string))
