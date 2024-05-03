@@ -29,9 +29,13 @@ resource "github_branch_protection" "this" {
   allows_force_pushes             = each.value.allows_force_pushes
   lock_branch                     = each.value.lock_branch
 
-  required_status_checks {
-    strict   = each.value.required_status_checks.strict
-    contexts = each.value.required_status_checks.contexts
+  dynamic "required_status_checks" {
+    for_each = each.value.required_status_checks != null ? { enabled = 1 } : {}
+
+    content {
+      strict   = each.value.required_status_checks.strict
+      contexts = each.value.required_status_checks.contexts
+    }
   }
 
   dynamic "required_pull_request_reviews" {
@@ -48,9 +52,13 @@ resource "github_branch_protection" "this" {
     }
   }
 
-  restrict_pushes {
-    blocks_creations = each.value.restrict_pushes.blocks_creations
-    push_allowances  = each.value.restrict_pushes.push_allowances
+  dynamic "restrict_pushes" {
+    for_each = each.value.restrict_pushes != null ? { enabled = 1 } : {}
+
+    content {
+      blocks_creations = each.value.restrict_pushes.blocks_creations
+      push_allowances  = each.value.restrict_pushes.push_allowances
+    }
   }
 }
 
