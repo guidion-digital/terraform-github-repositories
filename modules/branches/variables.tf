@@ -14,7 +14,7 @@ variable "branch_protections" {
     required_status_checks = optional(object({
       strict   = optional(bool, false)
       contexts = optional(list(string))
-    }))
+    }), null)
     required_pull_request_reviews = optional(object({
       dismiss_stale_reviews           = optional(bool, true)
       restrict_dismissals             = optional(bool, false)
@@ -23,11 +23,11 @@ variable "branch_protections" {
       require_code_owner_reviews      = optional(bool, false)
       required_approving_review_count = optional(number, 1)
       require_last_push_approval      = optional(bool, false)
-    }))
+    }), null)
     restrict_pushes = optional(object({
       blocks_creations = optional(bool, true)
       push_allowances  = optional(list(string))
-    }))
+    }), null)
     force_push_bypassers = optional(list(string), [])
     allows_deletions     = optional(bool, false)
     allows_force_pushes  = optional(bool, false)

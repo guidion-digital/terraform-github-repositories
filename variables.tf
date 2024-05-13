@@ -41,7 +41,12 @@ Defines a repo in full. Map of the following object:
     visibility         = 'public' or 'private'
     protected_tags     = List of tags that are to be protected with opinionated rules
 
-    branch_protections = Map of branch protections and their settings. See here for specification: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection#argument-reference
+    branch_protections = Map of branch protections and their settings.
+                         See here for specification: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection#argument-reference
+                         N.B. Block and all attributes are optional, but if any
+                         value is given, then the other attributes are filled
+                         in by their defaults, which you can find in the variable
+                         definition
 
     collaborators = Map of {
       username                    = Github username
@@ -57,7 +62,6 @@ Defines a repo in full. Map of the following object:
     environments = Map of {
       secrets            = List of names of secrets to create. Does not handle value population
       variables          = Map of variable name to values
-      protects_branches  = List of branches protected by this environment (deployment needs to pass)
       allowed_branches   = List of branches allowed access to this environment
       needs_environments = (WIP) List of environments that need to have been deployed before this one can be
       protections = Creates a ruleset if provided:
@@ -101,10 +105,7 @@ EOF
       required_status_checks = optional(object({
         strict   = optional(bool, false)
         contexts = optional(list(string), [])
-        }), {
-        strict   = false
-        contexts = []
-      })
+      }), null)
       required_pull_request_reviews = optional(object({
         dismiss_stale_reviews           = optional(bool, true)
         restrict_dismissals             = optional(bool, false)
@@ -113,23 +114,11 @@ EOF
         require_code_owner_reviews      = optional(bool, false)
         required_approving_review_count = optional(number, 1)
         require_last_push_approval      = optional(bool, false)
-        }), {
-        dismiss_stale_reviews           = true
-        restrict_dismissals             = false
-        dismissal_restrictions          = []
-        pull_request_bypassers          = []
-        require_code_owner_reviews      = false
-        required_approving_review_count = 1
-        require_last_push_approval      = false
-
-      })
+      }), null)
       restrict_pushes = optional(object({
         blocks_creations = optional(bool, true)
         push_allowances  = optional(list(string), [])
-        }), {
-        blocks_creations = true
-        push_allowances  = []
-      })
+      }), null)
       force_push_bypassers = optional(list(string), [])
       allows_deletions     = optional(bool, false)
       allows_force_pushes  = optional(bool, false)
