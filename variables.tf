@@ -156,7 +156,7 @@ EOF
       }),
       wait_timer          = optional(number),
       can_admins_bypass   = optional(bool, true),
-      prevent_self_review = optional(bool, true)
+      prevent_self_review = optional(bool, false)
     })), {})
   }))
 }
