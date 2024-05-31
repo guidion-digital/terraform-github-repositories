@@ -20,6 +20,9 @@ variable "environments" {
       teams = []
       users = []
     })
+    wait_timer          = optional(string),
+    can_admins_bypass   = optional(bool, true),
+    prevent_self_review = optional(bool, false)
   }))
 }
 

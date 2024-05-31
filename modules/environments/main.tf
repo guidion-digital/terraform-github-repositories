@@ -10,8 +10,11 @@ terraform {
 resource "github_repository_environment" "these" {
   for_each = var.environments
 
-  environment = each.key
-  repository  = var.repository
+  environment         = each.key
+  repository          = var.repository
+  wait_timer          = each.value.wait_timer
+  can_admins_bypass   = each.value.can_admins_bypass
+  prevent_self_review = each.value.prevent_self_review
 
   dynamic "reviewers" {
     for_each = var.plan == "enterprise" && (each.value.reviewers.teams != null || each.value.reviewers.users != null) ? { "enabled" = true } : {}
