@@ -111,7 +111,7 @@ EOF
         restrict_dismissals             = optional(bool, false)
         dismissal_restrictions          = optional(list(string), [])
         pull_request_bypassers          = optional(list(string), [])
-        require_code_owner_reviews      = optional(bool, false)
+        require_code_owner_reviews      = optional(bool, true)
         required_approving_review_count = optional(number, 1)
         require_last_push_approval      = optional(bool, false)
       }), null)
