@@ -48,8 +48,8 @@ module "teams" {
   source = "./modules/teams"
 
   repository    = each.value.name
-  teams_info    = lookup(var.repositories, each.value.name).teams
-  collaborators = lookup(var.repositories, each.value.name).collaborators
+  teams_info    = lookup(var.repositories, each.value.name, null).teams
+  collaborators = lookup(var.repositories, each.value.name, null).collaborators
 }
 
 module "environments" {
@@ -59,8 +59,8 @@ module "environments" {
   source = "./modules/environments"
 
   repository              = each.value.name
-  environments            = lookup(var.repositories, each.value.name).environments
-  paid_features_available = var.plan != "free" || lookup(var.repositories, each.value.name).visibility == "public" ? true : false
+  environments            = lookup(var.repositories, each.value.name, null).environments
+  paid_features_available = var.plan != "free" || lookup(var.repositories, each.value.name, null).visibility == "public" ? true : false
   plan                    = var.plan
 }
 
@@ -71,8 +71,8 @@ module "branches" {
   source = "./modules/branches"
 
   repository              = each.value.name
-  default_branch          = lookup(var.repositories, each.value.name).default_branch
-  branch_protections      = lookup(var.repositories, each.value.name).branch_protections
-  protected_tags          = lookup(var.repositories, each.value.name).protected_tags
-  paid_features_available = var.plan != "free" || lookup(var.repositories, each.value.name).visibility == "public" ? true : false
+  default_branch          = lookup(var.repositories, each.value.name, null).default_branch
+  branch_protections      = lookup(var.repositories, each.value.name, null).branch_protections
+  protected_tags          = lookup(var.repositories, each.value.name, null).protected_tags
+  paid_features_available = var.plan != "free" || lookup(var.repositories, each.value.name, null).visibility == "public" ? true : false
 }
