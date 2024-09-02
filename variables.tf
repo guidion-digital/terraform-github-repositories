@@ -39,7 +39,6 @@ Defines a repo in full. Map of the following object:
     }
 
     visibility         = 'public' or 'private'
-    protected_tags     = List of tags that are to be protected with opinionated rules
 
     branch_protections = Map of branch protections and their settings.
                          See here for specification: https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection#argument-reference
@@ -125,8 +124,6 @@ EOF
       lock_branch          = optional(bool, false)
     })), {})
 
-
-    protected_tags = optional(list(string), ["releases/**"])
     collaborators = optional(map(object({
       username                    = string,
       permission                  = optional(string, "pull")

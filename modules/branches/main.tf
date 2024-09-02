@@ -61,10 +61,3 @@ resource "github_branch_protection" "this" {
     }
   }
 }
-
-resource "github_repository_tag_protection" "these" {
-  for_each = var.paid_features_available ? toset(var.protected_tags) : toset([])
-
-  repository = var.repository
-  pattern    = each.value
-}
