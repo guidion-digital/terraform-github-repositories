@@ -35,11 +35,6 @@ variable "branch_protections" {
   }))
 }
 
-variable "protected_tags" {
-  description = "WIP: List of the protected tags to configure"
-  type        = list(string)
-}
-
 variable "paid_features_available" {
   description = "Not all features are available to private repos without paying"
   type        = bool
