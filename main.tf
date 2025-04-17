@@ -14,6 +14,9 @@ resource "github_repository" "these" {
   has_wiki               = each.value.has_wiki
   is_template            = each.value.is_template
   vulnerability_alerts   = each.value.vulnerability_alerts
+  auto_init              = each.value.auto_init
+  archived               = each.value.archived
+  archive_on_destroy     = each.value.archive_on_destroy
 
   # If it's a private repository, and we're on an enterprise plan, we can explicitly
   # set 'advanced_security'
