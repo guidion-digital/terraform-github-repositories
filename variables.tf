@@ -31,6 +31,9 @@ Defines a repo in full. Map of the following object:
     is_template            = Set to true to tell GitHub that this is a template repository
     vulnerability_alerts   = Set to true to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level
     default_branch         = Branch to make PRs against by default (must already exist if set, so can not be used when creating repository)
+    auto_init              = Initialise with a commit
+    archived               = Whether to archive the repo
+    archive_on_destroy     = Archive repo instead of deleting it
 
     security = {
       advanced                        = Whether advanced security is enabled. Has no effect on public repositories, or private repositories without an advanced security purchase
@@ -88,6 +91,9 @@ EOF
     has_wiki               = optional(bool, false)
     is_template            = optional(bool, false)
     vulnerability_alerts   = optional(bool, false)
+    auto_init              = optional(bool, false)
+    archived               = optional(bool, false)
+    archive_on_destroy     = optional(bool, true)
     default_branch         = optional(string, null)
     security = optional(object({
       advanced                        = optional(string, "enabled")
