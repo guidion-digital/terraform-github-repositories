@@ -1,5 +1,21 @@
 # Variables go here:
-variable "plan" {}
+variable "plan" { default = "enterprise" }
+variable "github_api_token" { sensitive = true }
+
+provider "github" {
+  owner = "guidion-digital"
+  token = var.github_api_token
+}
+
+terraform {
+  required_providers {
+    github = {
+      source  = "integrations/github"
+      version = "~> 6.0"
+    }
+  }
+}
+
 
 # Fixtures
 resource "github_team" "unicorns" {
@@ -21,6 +37,13 @@ module "unicorns_repos" {
       homepage_url = "https://example.com"
       visibility   = "private"
 
+      custom_properties = {
+        "project-team" = {
+          type  = "single_select"
+          value = ["Cinfra"]
+        }
+      }
+
       enforce_admins                  = true
       require_signed_commits          = true
       required_linear_history         = false
@@ -32,7 +55,7 @@ module "unicorns_repos" {
       required_pull_request_reviews = {
         required_approving_review_count = 2
         dismiss_stale_reviews           = false
-        pull_request_bypassers          = ["mitnik"]
+        pull_request_bypassers          = ["afrazkhan"]
       }
       restrict_pushes = {
         blocks_creations = false
@@ -44,8 +67,8 @@ module "unicorns_repos" {
       lock_branch          = true
 
       environments = {
+        dev = {}
         acc = {
-          secrets = ["npmrc"]
           variables = {
             "TFC_APPROVERS" = "afrazkhan"
           }
