@@ -1,5 +1,7 @@
 # Variables go here:
-variable "plan" {}
+variable "plan" {
+  default = "enterprise"
+}
 
 # Fixtures
 resource "github_team" "unicorns" {
