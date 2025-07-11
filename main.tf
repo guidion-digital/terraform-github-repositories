@@ -78,3 +78,12 @@ module "branches" {
   branch_protections      = lookup(var.repositories, each.value.name).branch_protections
   paid_features_available = var.plan != "free" || lookup(var.repositories, each.value.name).visibility == "public" ? true : false
 }
+
+module "properties" {
+  for_each = github_repository.these
+
+  source = "./modules/properties"
+
+  repository = each.value.name
+  properties = lookup(var.repositories, each.value.name).custom_properties
+}
