@@ -76,6 +76,11 @@ Defines a repo in full. Map of the following object:
         users = List of individual user reviewers
         }
     }
+    custom_properties = Map of {
+      type  = One of single_select, multi_select, string, or true_false
+      value = List of values (single_select, string, and true_false are single value arrays)
+    }
+
   }
 EOF
 
@@ -160,6 +165,10 @@ EOF
       wait_timer          = optional(number),
       can_admins_bypass   = optional(bool, true),
       prevent_self_review = optional(bool, false)
+    })), {})
+    custom_properties = optional(map(object({
+      type  = string
+      value = list(string)
     })), {})
   }))
 }

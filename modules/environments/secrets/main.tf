@@ -2,10 +2,11 @@ terraform {
   required_providers {
     github = {
       source  = "integrations/github"
-      version = "6.0.0"
+      version = "6.7.5"
     }
   }
 }
+
 
 resource "github_actions_environment_secret" "these" {
   for_each = toset(var.secrets)
