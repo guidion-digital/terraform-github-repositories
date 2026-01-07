@@ -38,4 +38,9 @@ resource "github_repository_ruleset" "these" {
       required_deployment_environments = var.protections.needs_environments
     }
   }
+
+  bypass_actors {
+    actor_type  = "OrganizationAdmin"
+    bypass_mode = "always"
+  }
 }
