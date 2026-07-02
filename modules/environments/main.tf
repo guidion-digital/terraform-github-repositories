@@ -48,7 +48,6 @@ module "secrets" {
 
   repository  = var.repository
   environment = each.key
-  secrets     = each.value.secrets
   variables   = each.value.variables
 }
 
