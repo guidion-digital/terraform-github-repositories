@@ -8,11 +8,6 @@ variable "environment" {
   type        = string
 }
 
-variable "secrets" {
-  description = "List of secret names. This module does not support setting values for secrets"
-  type        = list(string)
-}
-
 variable "variables" {
   description = "Map of key/values for variables"
   type        = map(string)
