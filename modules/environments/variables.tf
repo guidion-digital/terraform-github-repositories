@@ -6,7 +6,6 @@ variable "environments" {
   description = "Configuration for environments in this repository"
 
   type = map(object({
-    secrets          = optional(list(string), [])
     variables        = optional(map(string), {})
     allowed_branches = optional(list(string), [])
     protections = optional(object({

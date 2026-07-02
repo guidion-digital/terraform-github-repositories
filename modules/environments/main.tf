@@ -1,8 +1,7 @@
 terraform {
   required_providers {
     github = {
-      source  = "integrations/github"
-      version = "6.7.5"
+      source = "integrations/github"
     }
   }
 }
@@ -49,7 +48,6 @@ module "secrets" {
 
   repository  = var.repository
   environment = each.key
-  secrets     = each.value.secrets
   variables   = each.value.variables
 }
 
