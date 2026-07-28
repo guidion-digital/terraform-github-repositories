@@ -33,8 +33,15 @@ resource "github_repository_ruleset" "these" {
     deletion            = true
     required_signatures = true
 
-    required_deployments {
-      required_deployment_environments = var.protections.needs_environments
+    dynamic "required_deployments" {
+      # github provider v6.13.0 panics when this optional block is present
+      # but its environment list is null. Omit it unless deployments are
+      # explicitly required.
+      for_each = var.protections.needs_environments != null && length(var.protections.needs_environments) > 0 ? [var.protections.needs_environments] : []
+
+      content {
+        required_deployment_environments = required_deployments.value
+      }
     }
   }
 
