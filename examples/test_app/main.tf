@@ -21,10 +21,9 @@ terraform {
 
 # Fixtures
 resource "github_team" "unicorns" {
-  name                      = "unicorns"
-  description               = "We do the webs"
-  privacy                   = "closed"
-  create_default_maintainer = true
+  name        = "unicorns"
+  description = "We do the webs"
+  privacy     = "closed"
 }
 
 # Test example

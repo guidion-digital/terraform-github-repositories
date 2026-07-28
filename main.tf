@@ -8,12 +8,10 @@ resource "github_repository" "these" {
   delete_branch_on_merge = each.value.delete_branch_on_merge
   allow_update_branch    = each.value.allow_update_branch
   has_discussions        = each.value.has_discussions
-  has_downloads          = each.value.has_downloads
   has_issues             = each.value.has_issues
   has_projects           = each.value.has_projects
   has_wiki               = each.value.has_wiki
   is_template            = each.value.is_template
-  vulnerability_alerts   = each.value.vulnerability_alerts
   auto_init              = each.value.auto_init
   archived               = each.value.archived
   archive_on_destroy     = each.value.archive_on_destroy
@@ -42,6 +40,13 @@ resource "github_repository" "these" {
       secret_scanning_push_protection { status = each.value.security.secret_scanning_push_protection }
     }
   }
+}
+
+resource "github_repository_vulnerability_alerts" "these" {
+  for_each = github_repository.these
+
+  repository = each.value.name
+  enabled    = var.repositories[each.key].vulnerability_alerts
 }
 
 module "teams" {
