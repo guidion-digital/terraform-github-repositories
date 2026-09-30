@@ -16,6 +16,16 @@ resource "github_repository" "these" {
   archived               = each.value.archived
   archive_on_destroy     = each.value.archive_on_destroy
 
+  dynamic "template" {
+    for_each = each.value.template == null ? [] : [each.value.template]
+
+    content {
+      owner                = template.value.owner
+      repository           = template.value.repository
+      include_all_branches = template.value.include_all_branches
+    }
+  }
+
   # If it's a private repository, and we're on an enterprise plan, we can explicitly
   # set 'advanced_security'
   dynamic "security_and_analysis" {
