@@ -28,6 +28,7 @@ Defines a repo in full. Map of the following object:
     has_projects           = Set to true to enable the GitHub Projects features on the repository. Per the GitHub documentation when in an organization that has disabled repository projects it will default to false and will otherwise default to true. If you specify true when it has been disabled it will return an error
     has_wiki               = Set to true to enable the GitHub Wiki features on the repository
     is_template            = Set to true to tell GitHub that this is a template repository
+    template               = Optional source repository to generate this repository from (owner, repository, include_all_branches)
     vulnerability_alerts   = Set to true to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level
     default_branch         = Branch to make PRs against by default (must already exist if set, so can not be used when creating repository)
     auto_init              = Initialise with a commit
@@ -93,11 +94,16 @@ EOF
     has_projects           = optional(bool, false)
     has_wiki               = optional(bool, false)
     is_template            = optional(bool, false)
-    vulnerability_alerts   = optional(bool, false)
-    default_branch         = optional(string, null)
-    auto_init              = optional(bool, false)
-    archived               = optional(bool, false)
-    archive_on_destroy     = optional(bool, true)
+    template = optional(object({
+      owner                = string
+      repository           = string
+      include_all_branches = optional(bool, false)
+    }), null)
+    vulnerability_alerts = optional(bool, false)
+    default_branch       = optional(string, null)
+    auto_init            = optional(bool, false)
+    archived             = optional(bool, false)
+    archive_on_destroy   = optional(bool, true)
     security = optional(object({
       advanced                        = optional(string, "enabled")
       secret_scanning                 = optional(string, "enabled")
@@ -169,4 +175,9 @@ EOF
       value = list(string)
     })), {})
   }))
+
+  validation {
+    condition     = alltrue([for repository in values(var.repositories) : repository.template == null || !repository.auto_init])
+    error_message = "A repository generated from a template must not set auto_init = true."
+  }
 }
